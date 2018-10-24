@@ -1,0 +1,36 @@
+
+.wrapper {
+    margin-top: 100px;
+}
+
+.form-signin {
+    width: 360px;
+    height: 350px;
+    position: relative;
+    padding: 25px 25px 25px;
+    margin: 0 auto;
+    text-align: center;
+    background-color: #fff;
+    border-radius: 5px;
+    border: 2px solid rgba(0, 0, 0, 0.1);
+}
+
+.form-input {
+    position: relative;
+    font-size: 16px;
+    width: 240px;
+    height: 50px;
+    padding: 10px;
+    margin-top: 10px;
+}
+
+.form-button {
+    margin-top: 15px;
+    height: 50px;
+    width: 240px;
+    background-color: deepskyblue;
+    text-align: center;
+    font-size: 16px;
+    color: white;
+    border-radius: 5px;
+}
