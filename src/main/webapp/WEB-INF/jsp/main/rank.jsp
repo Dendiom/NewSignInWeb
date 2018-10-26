@@ -1,12 +1,5 @@
-<%@ page import="com.example.signinweb.bean.User" %>
-<%@ page import="com.example.signinweb.Constants" %>
-<%@ page import="com.example.signinweb.bean.Result" %><%--
-  Created by IntelliJ IDEA.
-  User: lucky
-  Date: 2018/5/29
-  Time: 22:56
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="com.lucky.NewSignInWeb.bean.Result" %>
+<%@ page import="com.lucky.NewSignInWeb.constant.Constants" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jstl/fmt_rt"%>

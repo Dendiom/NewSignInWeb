@@ -35,7 +35,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Result login(String username, String password) {
-        return null;
+        try {
+            User user = userDao.getUserByUsername(username);
+            if (user == null) {
+                return new Result<>(Code.USER_NOT_REGISTERED, "用户未注册");
+            }
+
+            if (password.equals(user.getPassword())) {
+                return new Result<>(Code.SUCCESS, user);
+            }
+
+            return new Result<>(Code.PASSWORD_ERROR, "密码错误");
+        } catch (Exception e) {
+            return new Result<>(Code.MYSQL_ERROR, "mysql error");
+        }
     }
 
     @Override

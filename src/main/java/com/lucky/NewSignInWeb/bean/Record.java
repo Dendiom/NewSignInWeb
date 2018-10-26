@@ -25,6 +25,12 @@ public class Record {
     private Timestamp gmt_create;
     private Timestamp gmt_modified;
 
+    public Record() {
+        this.count = 1800;
+        this.gmt_create = new Timestamp(System.currentTimeMillis());
+        this.gmt_modified = new Timestamp(System.currentTimeMillis());
+    }
+
     public BigInteger getId() {
         return id;
     }

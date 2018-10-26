@@ -1,15 +1,7 @@
+<%@ page import="com.lucky.NewSignInWeb.bean.Result" %>
+<%@ page import="com.lucky.NewSignInWeb.constant.Constants" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%@ page import="com.example.signinweb.Constants" %>
-<%@ page import="com.example.signinweb.bean.User" %>
-<%@ page import="com.example.signinweb.bean.Result" %>
-<%--
-Created by IntelliJ IDEA.
-User: lucky
-Date: 2018/5/29
-Time: 22:23
-To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -30,6 +22,8 @@ To change this template use File | Settings | File Templates.
         if (result != null) {
             out.println(result.getObj());
         }
+        String[] week = {"星期一", "星期二", "星期三", "星期四", "星期五", "星期六", "星期日"};
+        pageContext.setAttribute("week", week);
     %>
 </div>
 <div style="text-align: center">
@@ -42,7 +36,7 @@ To change this template use File | Settings | File Templates.
         </tr>
         <c:forEach items="${sessionScope.record}" var="record" varStatus="status">
             <tr>
-                <th>${applicationScope.week[status.index]}</th>
+                <th>${week[status.index]}</th>
                 <th>${fn:substring(record.in_time_mor, 10, 16)}</th>
                 <th>${fn:substring(record.out_time_mor, 10, 16)}</th>
                 <th>${fn:substring(record.in_time_noon, 10, 16)}</th>
@@ -59,8 +53,8 @@ To change this template use File | Settings | File Templates.
     </table>
 </div>
 <div class="button" style="width:100%;text-align: center;font-size: 18px;margin-top: 20px">
-    <a style="text-align: left" target="main" href="count.do?method=sign_in">签到</a>
-    <a style="text-align: right" target="main" href="count.do?method=sign_out">签出</a>
+    <a style="text-align: left" target="main" href="<%=request.getContextPath()%>/main/count.do?method=sign_in">签到</a>
+    <a style="text-align: right" target="main" href="<%=request.getContextPath()%>/main/count.do?method=sign_out">签出</a>
 </div>
 </body>
 </html>

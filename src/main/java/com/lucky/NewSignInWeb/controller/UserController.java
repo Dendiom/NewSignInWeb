@@ -5,16 +5,16 @@ import com.lucky.NewSignInWeb.bean.User;
 import com.lucky.NewSignInWeb.constant.Constants;
 import com.lucky.NewSignInWeb.enums.Code;
 import com.lucky.NewSignInWeb.service.UserService;
+import com.lucky.NewSignInWeb.util.Base64Util;
 import com.lucky.NewSignInWeb.util.CookieUtil;
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -26,16 +26,34 @@ public class UserController {
     private UserService userService;
 
     @PostMapping("/login.do")
-    public ModelAndView login() {
-        System.out.println("jjjjj");
-        ModelAndView modelAndView = new ModelAndView("index");
-        modelAndView.addObject("name", "Jack");
+    public ModelAndView login(HttpServletRequest req, HttpServletResponse resp,
+                              @RequestParam(name = "username") String username, @RequestParam("password") String password,
+                              @RequestParam(name = "rememberMe", required = false) String rememberMe) {
+
+        Result result = userService.login(username, password);
+
+        // 成功登陆
+        if (result.getCode() == Code.SUCCESS) {
+            User user = (User) result.getObj();
+            Cookie cookie = new Cookie(Constants.Cookies.UID, Base64Util.encode(String.valueOf(user.getId())));
+            cookie.setMaxAge(rememberMe == null ? -1 : 365 * 24 * 60 * 60);
+            cookie.setPath("/");
+            resp.addCookie(cookie);
+
+            HttpSession session = req.getSession();
+            session.setAttribute(Constants.SessionAttrs.USER, user);
+
+            return new ModelAndView("redirect:main/form");
+        }
+
+        ModelAndView modelAndView = new ModelAndView("login");
+        modelAndView.addObject(Constants.ReqAttrs.ERROR, result);
         return modelAndView;
     }
 
     @PostMapping("/register.do")
     public ModelAndView register(HttpServletRequest req, @RequestParam("username") String username,
-                           @RequestParam("password") String password) {
+                                 @RequestParam("password") String password) {
 
         Result result = userService.register(username, password);
         HttpSession session = req.getSession();
@@ -49,7 +67,7 @@ public class UserController {
         return modelAndView;
     }
 
-    @PostMapping("/logout.do")
+    @GetMapping("/logout.do")
     public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession(false);
         if (session != null) {
